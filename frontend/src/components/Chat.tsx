@@ -9,16 +9,29 @@ interface Message {
   timestamp?: string
 }
 
+interface Action {
+  label: string
+  type: 'send' | 'navigate' | 'upload'
+  message?: string
+  target?: string
+}
+
+interface Suggestions {
+  questions: string[]
+  actions: Action[]
+}
+
 interface ChatProps {
   conversationId?: string
   onConversationChange: (convId: string) => void
+  onNavigate?: (target: string) => void
 }
 
-export default function Chat({ conversationId, onConversationChange }: ChatProps) {
+export default function Chat({ conversationId, onConversationChange, onNavigate }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [suggestions, setSuggestions] = useState<Suggestions | null>(null)
   const [userConfig, setUserConfig] = useState<any>({})
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -86,7 +99,7 @@ export default function Chat({ conversationId, onConversationChange }: ChatProps
     }
     setMessages(prev => [...prev, userMsg])
     setInput('')
-    setSuggestions([])
+    setSuggestions(null)
     setLoading(true)
 
     try {
@@ -110,7 +123,8 @@ export default function Chat({ conversationId, onConversationChange }: ChatProps
         content: data.reply || '无回复'
       }])
 
-      if (data.suggestions && data.suggestions.length > 0) {
+      // 处理智能推荐
+      if (data.suggestions) {
         setSuggestions(data.suggestions)
       }
 
@@ -239,18 +253,44 @@ export default function Chat({ conversationId, onConversationChange }: ChatProps
       <div className="flex-shrink-0 px-4 sm:px-8 pb-6 pt-2 bg-white/95 backdrop-blur-sm z-20">
         <div className="max-w-4xl mx-auto relative group">
           
-          {/* 建议 - 浮动在输入框上方 */}
-          {suggestions.length > 0 && !loading && (
-            <div className="absolute bottom-full left-0 mb-4 flex flex-wrap gap-2 animate-slide-up px-1">
-              {suggestions.map((s, i) => (
-                <button
-                  key={i}
-                  onClick={() => handleSend(s)}
-                  className="px-4 py-2 bg-white text-[#007AFF] text-[13px] font-medium rounded-full border border-[#007AFF]/10 shadow-lg shadow-blue-500/10 hover:bg-[#007AFF] hover:text-white transition-all hover:-translate-y-0.5"
-                >
-                  {s}
-                </button>
-              ))}
+          {/* 智能推荐 - 浮动在输入框上方 */}
+          {suggestions && !loading && (
+            <div className="absolute bottom-full left-0 right-0 mb-4 animate-slide-up px-1">
+              {/* 推荐问题 */}
+              {suggestions.questions && suggestions.questions.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {suggestions.questions.map((q, i) => (
+                    <button
+                      key={`q-${i}`}
+                      onClick={() => handleSend(q)}
+                      className="px-4 py-2 bg-white text-[#1D1D1F] text-[13px] font-medium rounded-full border border-[#E5E5EA] shadow-sm hover:bg-[#F5F5F7] hover:border-[#007AFF]/30 transition-all hover:-translate-y-0.5"
+                    >
+                      💬 {q}
+                    </button>
+                  ))}
+                </div>
+              )}
+              
+              {/* 快捷动作 */}
+              {suggestions.actions && suggestions.actions.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {suggestions.actions.map((action, i) => (
+                    <button
+                      key={`a-${i}`}
+                      onClick={() => {
+                        if (action.type === 'send' && action.message) {
+                          handleSend(action.message)
+                        } else if (action.type === 'navigate' && action.target && onNavigate) {
+                          onNavigate(action.target)
+                        }
+                      }}
+                      className="px-4 py-2.5 bg-gradient-to-r from-[#007AFF] to-[#0A84FF] text-white text-[13px] font-semibold rounded-full shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all hover:-translate-y-0.5 hover:scale-105"
+                    >
+                      {action.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

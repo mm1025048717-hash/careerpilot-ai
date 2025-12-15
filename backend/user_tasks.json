@@ -1,5 +1,18 @@
 [
   {
+    "id": "870e762b",
+    "type": "apply",
+    "status": "completed",
+    "title": "投递-产品经理",
+    "description": "城市：北京，数量：5",
+    "created_at": "2025-12-15 21:14",
+    "progress": 100,
+    "log": "✅ 完成！成功投递 0 个职位",
+    "keyword": "产品经理",
+    "city": "北京",
+    "count": 5
+  },
+  {
     "id": "1eebbd0a",
     "type": "apply",
     "status": "running",
@@ -34,5 +47,16 @@
     "created_at": "2025-12-15 20:06",
     "progress": 100,
     "log": "Agent 执行完成"
+  },
+  {
+    "id": "ec36b6e4-0296-4af8-9ef1-e21f31a61984",
+    "type": "apply",
+    "keyword": "产品经理",
+    "city": "北京",
+    "count": 5,
+    "status": "completed",
+    "created_at": "2025-12-15T21:14:20.987563",
+    "progress": 100,
+    "log": "✅ 完成！成功投递 0 个职位"
   }
 ]

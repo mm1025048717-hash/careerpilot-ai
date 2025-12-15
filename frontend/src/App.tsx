@@ -30,6 +30,19 @@ function App() {
     setActiveTab('chat')
   }
 
+  const handleNavigate = (target: string) => {
+    const tabMap: Record<string, Tab> = {
+      'tasks': 'tasks',
+      'settings': 'settings',
+      'knowledge': 'knowledge',
+      'history': 'history',
+      'chat': 'chat'
+    }
+    if (tabMap[target]) {
+      setActiveTab(tabMap[target])
+    }
+  }
+
   return (
     <>
       {showOnboarding && <Onboarding onComplete={() => setShowOnboarding(false)} />}
@@ -108,6 +121,7 @@ function App() {
             <Chat 
               conversationId={currentConversationId} 
               onConversationChange={setCurrentConversationId}
+              onNavigate={handleNavigate}
             />
           )}
           {activeTab === 'history' && (

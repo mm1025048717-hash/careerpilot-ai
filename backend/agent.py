@@ -185,6 +185,9 @@ class DualAgent:
             # 生成回复
             response = self._generate_response(user_input, understanding, history, task_created)
             
+            # 生成智能推荐（问题和动作）
+            suggestions = self._generate_suggestions(user_input, understanding, task_created)
+            
             # 保存对话
             if conversation_id:
                 conversation_manager.add_message(conversation_id, "user", user_input)
@@ -193,7 +196,8 @@ class DualAgent:
             return {
                 "response": response,
                 "understanding": understanding,
-                "task_created": task_created
+                "task_created": task_created,
+                "suggestions": suggestions
             }
             
         except Exception as e:
@@ -261,6 +265,98 @@ class DualAgent:
                 return f"好的，我已经为你创建了投递任务！将在{task_created.get('city')}投递{task_created.get('count')}个{task_created.get('keyword')}岗位。任务正在后台执行中，你可以在「任务」页面查看进度。"
             
             return "收到你的消息了！有什么我可以帮你的吗？"
+    
+    def _generate_suggestions(self, user_input: str, understanding: Dict, task_created: Dict = None) -> Dict:
+        """根据用户意图生成智能推荐"""
+        config = load_config()
+        intent = understanding.get("intent", "general_chat")
+        entities = understanding.get("entities", {})
+        
+        # 获取用户配置
+        user_name = config.get("name", "用户")
+        target_city = config.get("targetCity", "北京")
+        target_role = config.get("targetRole", "产品经理")
+        
+        # 推荐问题列表
+        questions = []
+        # 推荐动作列表
+        actions = []
+        
+        # 根据意图动态生成推荐
+        if task_created:
+            # 刚创建任务后的推荐
+            questions = [
+                f"查看其他城市的{target_role}岗位",
+                "帮我优化简历",
+                "查看任务进度"
+            ]
+            actions = [
+                {"label": "📊 查看任务", "type": "navigate", "target": "tasks"},
+                {"label": f"🔍 搜索更多{target_role}", "type": "send", "message": f"帮我搜索更多{target_role}岗位"}
+            ]
+        elif intent == "apply_job":
+            # 投递相关
+            keyword = entities.get("keyword", target_role)
+            city = entities.get("city", target_city)
+            questions = [
+                f"帮我投递{city}的{keyword}岗位",
+                f"搜索深圳的{keyword}岗位",
+                f"推荐高薪{keyword}职位"
+            ]
+            actions = [
+                {"label": f"🚀 立即投递 {keyword}", "type": "send", "message": f"帮我投递{city}的{keyword}岗位，投5个"},
+                {"label": "📝 优化简历", "type": "send", "message": "帮我优化简历"}
+            ]
+        elif intent == "search_job":
+            # 搜索相关
+            questions = [
+                f"帮我投递{target_city}的岗位",
+                "推荐互联网大厂的职位",
+                "查看最新的招聘信息"
+            ]
+            actions = [
+                {"label": "🔍 开始搜索", "type": "send", "message": f"搜索{target_city}的{target_role}岗位"},
+                {"label": "📋 查看知识库", "type": "navigate", "target": "knowledge"}
+            ]
+        elif intent == "optimize_resume":
+            # 简历优化
+            questions = [
+                "帮我分析简历的不足",
+                "推荐简历模板",
+                "如何突出我的项目经验"
+            ]
+            actions = [
+                {"label": "📤 上传简历", "type": "upload", "target": "resume"},
+                {"label": "💡 获取建议", "type": "send", "message": "给我一些简历优化的具体建议"}
+            ]
+        elif intent == "interview_prep":
+            # 面试准备
+            questions = [
+                f"{target_role}常见面试问题",
+                "如何回答职业规划问题",
+                "薪资谈判技巧"
+            ]
+            actions = [
+                {"label": "📚 面试题库", "type": "send", "message": f"给我一些{target_role}的面试问题"},
+                {"label": "🎯 模拟面试", "type": "send", "message": "帮我模拟一次面试"}
+            ]
+        else:
+            # 通用推荐
+            questions = [
+                f"帮我投递{target_city}的{target_role}岗位",
+                "帮我优化简历",
+                "推荐一些高薪职位",
+                "面试准备建议"
+            ]
+            actions = [
+                {"label": f"🚀 快速投递", "type": "send", "message": f"帮我投递{target_city}的{target_role}，投5个"},
+                {"label": "⚙️ 修改偏好", "type": "navigate", "target": "settings"}
+            ]
+        
+        return {
+            "questions": questions[:4],  # 最多4个问题
+            "actions": actions[:3]  # 最多3个动作
+        }
 
 
 # 全局实例
