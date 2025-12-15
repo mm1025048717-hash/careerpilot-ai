@@ -41,7 +41,7 @@ export default function History({ onSelectConversation, currentConversationId }:
       const res = await fetch('http://localhost:5000/api/conversations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: 'New Conversation' })
+        body: JSON.stringify({ title: '新对话' })
       })
       const conv = await res.json()
       setConversations(prev => [conv, ...prev])
@@ -53,8 +53,8 @@ export default function History({ onSelectConversation, currentConversationId }:
 
   const deleteConversation = async (convId: string, e: React.MouseEvent) => {
     e.stopPropagation()
-    if (!confirm('Are you sure you want to delete this conversation?')) return
-    
+    if (!confirm('确定要删除这个对话吗？')) return
+
     try {
       await fetch(`http://localhost:5000/api/conversations/${convId}`, {
         method: 'DELETE'
@@ -70,11 +70,11 @@ export default function History({ onSelectConversation, currentConversationId }:
     const now = new Date()
     const diff = now.getTime() - date.getTime()
     const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    
-    if (days === 0) return 'Today'
-    if (days === 1) return 'Yesterday'
-    if (days < 7) return `${days} days ago`
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+
+    if (days === 0) return '今天'
+    if (days === 1) return '昨天'
+    if (days < 7) return `${days} 天前`
+    return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
   }
 
   const filteredConversations = conversations.filter(conv =>
@@ -95,8 +95,8 @@ export default function History({ onSelectConversation, currentConversationId }:
       <header className="px-8 py-6 border-b border-[#F5F5F7] sticky top-0 bg-white/90 backdrop-blur-xl z-10">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-[24px] font-bold text-[#1D1D1F] tracking-tight">History</h2>
-            <p className="text-[13px] text-[#86868B] font-medium mt-1">{conversations.length} Conversations</p>
+            <h2 className="text-[24px] font-bold text-[#1D1D1F] tracking-tight">历史会话</h2>
+            <p className="text-[13px] text-[#86868B] font-medium mt-1">{conversations.length} 个对话</p>
           </div>
           <button
             onClick={createNewConversation}
@@ -105,10 +105,10 @@ export default function History({ onSelectConversation, currentConversationId }:
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
             </svg>
-            New Chat
+            新对话
           </button>
         </div>
-        
+
         {/* Search */}
         <div className="relative group">
           <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#86868B] group-focus-within:text-[#007AFF] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -116,7 +116,7 @@ export default function History({ onSelectConversation, currentConversationId }:
           </svg>
           <input
             type="text"
-            placeholder="Search conversations..."
+            placeholder="搜索对话..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-[#F2F2F7] rounded-[12px] text-[15px] text-[#1D1D1F] placeholder-[#86868B] focus:bg-white focus:shadow-[0_0_0_4px_rgba(0,122,255,0.1)] focus:outline-none transition-all duration-200"
@@ -137,7 +137,7 @@ export default function History({ onSelectConversation, currentConversationId }:
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <p className="text-[#86868B] text-[15px] font-medium">No conversations found</p>
+            <p className="text-[#86868B] text-[15px] font-medium">暂无对话记录</p>
           </div>
         ) : (
           <div className="space-y-8 pb-12">
@@ -151,19 +151,17 @@ export default function History({ onSelectConversation, currentConversationId }:
                     <div
                       key={conv.id}
                       onClick={() => onSelectConversation(conv.id)}
-                      className={`group relative p-4 rounded-[18px] transition-all duration-200 cursor-pointer border ${
-                        currentConversationId === conv.id
-                          ? 'bg-[#007AFF]/5 border-[#007AFF]/20 shadow-sm'
-                          : 'bg-white border-transparent hover:bg-[#F5F5F7]'
-                      }`}
+                      className={`group relative p-4 rounded-[18px] transition-all duration-200 cursor-pointer border ${currentConversationId === conv.id
+                        ? 'bg-[#007AFF]/5 border-[#007AFF]/20 shadow-sm'
+                        : 'bg-white border-transparent hover:bg-[#F5F5F7]'
+                        }`}
                     >
                       <div className="flex justify-between items-start mb-1">
-                        <h4 className={`text-[16px] font-semibold truncate pr-8 transition-colors ${
-                          currentConversationId === conv.id ? 'text-[#007AFF]' : 'text-[#1D1D1F]'
-                        }`}>
-                          {conv.title || 'Untitled Conversation'}
+                        <h4 className={`text-[16px] font-semibold truncate pr-8 transition-colors ${currentConversationId === conv.id ? 'text-[#007AFF]' : 'text-[#1D1D1F]'
+                          }`}>
+                          {conv.title || '未命名对话'}
                         </h4>
-                        
+
                         <button
                           onClick={(e) => deleteConversation(conv.id, e)}
                           className="opacity-0 group-hover:opacity-100 p-1.5 text-[#86868B] hover:text-[#FF3B30] hover:bg-[#FF3B30]/10 rounded-full transition-all absolute right-3 top-3"
@@ -173,11 +171,11 @@ export default function History({ onSelectConversation, currentConversationId }:
                           </svg>
                         </button>
                       </div>
-                      
+
                       <p className="text-[14px] text-[#86868B] line-clamp-2 leading-relaxed mb-3">
-                        {conv.summary || 'No summary available...'}
+                        {conv.summary || '暂无摘要...'}
                       </p>
-                      
+
                       <div className="flex items-center gap-3">
                         <span className="flex items-center gap-1.5 text-[12px] text-[#86868B] bg-[#F2F2F7] px-2 py-1 rounded-[6px]">
                           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

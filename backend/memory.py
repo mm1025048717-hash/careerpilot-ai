@@ -133,6 +133,13 @@ class ConversationManager:
         if conv:
             return conv.get('messages', [])[-limit:]
         return []
+    
+    def get_messages(self, conv_id: str) -> List[Dict]:
+        """获取会话的所有消息"""
+        conv = self.get_conversation(conv_id)
+        if conv:
+            return conv.get('messages', [])
+        return []
 
 
 class MemorySystem:
@@ -334,6 +341,10 @@ class MemorySystem:
                 profile_parts.append(f"- {k}: {v}")
         
         return "\n".join(profile_parts) if profile_parts else "暂无用户画像数据"
+    
+    def get_user_profile_summary(self) -> str:
+        """获取用户画像摘要（别名）"""
+        return self.generate_user_profile()
 
 
 # 单例实例
