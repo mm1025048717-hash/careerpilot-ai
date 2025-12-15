@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Apple Color System - Refined */
+  --ios-blue: #007AFF;
+  --ios-blue-dim: rgba(0, 122, 255, 0.1);
+  --ios-blue-hover: #0066CC;
+  
+  --ios-gray-50: #F9FAFB;
+  --ios-gray-100: #F2F2F7;
+  --ios-gray-200: #E5E5EA;
+  --ios-gray-300: #D1D1D6;
+  --ios-gray-400: #C7C7CC;
+  --ios-gray-500: #AEAEB2;
+  --ios-gray-600: #8E8E93;
+  
+  --text-primary: #1D1D1F;   /* Apple Headline */
+  --text-secondary: #86868B; /* Apple Subheadline */
+  --text-tertiary: #98989D;
+  
+  --bg-app: #F5F5F7;        /* Standard iOS Background */
+  --bg-card: #FFFFFF;
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  letter-spacing: -0.01em; /* Tighter letter spacing for SF look */
+}
+
+/* Custom Scrollbar - Slim & Minimal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+@layer components {
+  /* 顶级卡片样式 */
+  .ios-card {
+    @apply bg-white rounded-[24px] border border-white/60 shadow-[0_4px_20px_rgba(0,0,0,0.03)] backdrop-blur-xl transition-all duration-300;
+  }
+  
+  .ios-card-hover {
+    @apply hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-[1px];
+  }
+
+  /* 苹果风格输入框 */
+  .ios-input {
+    @apply w-full px-4 py-3.5 bg-[#F2F2F7] border border-transparent rounded-[14px] 
+           text-[15px] text-[#1D1D1F] placeholder-[#86868B]
+           transition-all duration-200 outline-none
+           focus:bg-white focus:border-[#007AFF]/30 focus:shadow-[0_0_0_4px_rgba(0,122,255,0.1)];
+  }
+
+  /* 苹果风格按钮 */
+  .ios-btn-primary {
+    @apply px-6 py-3 bg-[#007AFF] text-white font-medium rounded-[16px] text-[15px]
+           shadow-[0_4px_12px_rgba(0,122,255,0.25)] border border-transparent
+           transition-all duration-200 active:scale-[0.98]
+           hover:bg-[#0066CC] hover:shadow-[0_6px_16px_rgba(0,122,255,0.35)]
+           disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed;
+  }
+
+  .ios-btn-secondary {
+    @apply px-6 py-3 bg-white text-[#1D1D1F] font-medium rounded-[16px] text-[15px]
+           shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#E5E5EA]
+           transition-all duration-200 active:scale-[0.98]
+           hover:bg-[#F9FAFB] hover:border-[#D1D1D6];
+  }
+
+  .ios-btn-ghost {
+    @apply p-2 text-[#86868B] hover:text-[#007AFF] hover:bg-[#007AFF]/10 rounded-xl transition-all duration-200;
+  }
+
+  /* 侧边栏导航项 */
+  .ios-nav-item {
+    @apply flex items-center gap-3.5 px-4 py-3 rounded-[16px] text-[15px] font-medium transition-all duration-200;
+  }
+  
+  .ios-nav-item-active {
+    @apply bg-white text-[#007AFF] shadow-[0_2px_12px_rgba(0,0,0,0.04)];
+  }
+  
+  .ios-nav-item-inactive {
+    @apply text-[#6E6E73] hover:bg-black/[0.03] hover:text-[#1D1D1F];
+  }
+}
+
+/* 动画工具类 */
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale {
+  animation: scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}

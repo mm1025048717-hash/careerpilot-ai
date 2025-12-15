@@ -1,0 +1,13 @@
+{
+  "apiKey": "sk-82f3c9a1bc5342ba95851c604d4fd670",
+  "name": "陈宣任",
+  "targetCity": "北京",
+  "targetRole": "产品经理",
+  "salary": "15-20K",
+  "resume_path": "uploads\\20251215_184243_pdf",
+  "resume_name": "pdf",
+  "resume_content": "（系统错误：解析失败 - list index out of range）",
+  "apiEndpoint": "https://api.deepseek.com",
+  "model": "deepseek-chat",
+  "bossAccount": "18384666818"
+}

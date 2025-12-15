@@ -1,0 +1,135 @@
+BOSS直聘数字员工 - 项目结构
+=====================================
+
+项目根目录/
+│
+├── frontend/                    # 前端项目（React + TypeScript + Vite）
+│   ├── src/
+│   │   ├── App.tsx             # 主应用组件（左侧导航+右侧内容）
+│   │   ├── main.tsx            # 入口文件
+│   │   ├── index.css           # 全局样式（Tailwind + 苹果风格）
+│   │   └── components/         # 功能组件
+│   │       ├── Chat.tsx        # AI对话界面
+│   │       ├── Settings.tsx    # 设置页面（API配置）
+│   │       └── Tasks.tsx       # 任务管理界面
+│   │
+│   ├── public/                 # 静态资源
+│   ├── package.json            # 前端依赖
+│   ├── vite.config.ts          # Vite配置
+│   ├── tailwind.config.js      # Tailwind配置（蓝白配色）
+│   ├── tsconfig.json           # TypeScript配置
+│   ├── run.bat                 # Windows启动脚本
+│   └── run.sh                  # Linux/Mac启动脚本
+│
+├── backend/                     # 后端项目（Python + Flask）
+│   ├── app.py                  # Flask主应用（API路由）
+│   ├── ai_service.py           # AI服务模块（OpenAI/Anthropic/DeepSeek）
+│   ├── boss_automation.py      # BOSS直聘自动化（Playwright）
+│   ├── requirements.txt        # Python依赖
+│   ├── .env.example            # 环境变量模板
+│   ├── run.bat                 # Windows启动脚本
+│   └── run.sh                  # Linux/Mac启动脚本
+│
+├── README.md                    # 完整项目文档
+├── 快速开始.md                  # 快速入门指南
+├── LICENSE                      # MIT开源协议
+├── 启动项目.bat                 # Windows一键启动脚本
+└── .gitignore                  # Git忽略规则
+
+核心技术栈
+==========
+
+前端:
+- React 18 + TypeScript
+- Vite (构建工具)
+- Tailwind CSS (苹果风格UI)
+- 自定义蓝白配色主题
+
+后端:
+- Python 3.8+
+- Flask (Web框架)
+- Playwright (浏览器自动化)
+- OpenAI/Anthropic SDK (AI能力)
+
+主要功能
+========
+
+1. AI对话 (Chat.tsx)
+   - 自然语言交互
+   - 意图识别和任务创建
+   - 实时消息流式显示
+
+2. 任务管理 (Tasks.tsx)
+   - 任务列表展示
+   - 进度实时更新
+   - 任务状态管理
+
+3. 设置 (Settings.tsx)
+   - AI服务配置
+   - BOSS直聘账号配置
+   - 本地存储（localStorage）
+
+4. BOSS自动化 (boss_automation.py)
+   - 自动登录
+   - 职位搜索
+   - 简历投递
+   - 消息回复
+
+5. AI服务 (ai_service.py)
+   - 多AI提供商支持
+   - 意图识别
+   - 智能回复生成
+   - 简历优化
+
+API端点
+=======
+
+GET  /api/health          - 健康检查
+POST /api/chat            - AI对话
+GET  /api/tasks           - 获取任务列表
+POST /api/tasks           - 创建新任务
+GET  /api/tasks/<id>      - 获取任务详情
+PUT  /api/tasks/<id>      - 更新任务
+POST /api/resume          - 上传简历
+
+启动方式
+========
+
+Windows:
+  方式1: 双击 "启动项目.bat"
+  方式2: 分别运行 backend/run.bat 和 frontend/run.bat
+
+Mac/Linux:
+  chmod +x backend/run.sh frontend/run.sh
+  终端1: cd backend && ./run.sh
+  终端2: cd frontend && ./run.sh
+
+访问地址
+========
+
+前端: http://localhost:5173
+后端: http://localhost:5000
+API文档: http://localhost:5000/api/health
+
+开发状态
+========
+
+✅ 前端UI（苹果风格蓝白配色）
+✅ 后端API服务
+✅ AI对话模块
+✅ 任务管理系统
+✅ BOSS自动化框架
+✅ 多AI提供商支持
+✅ 完整文档
+
+待完善:
+⏳ BOSS直聘验证码处理
+⏳ 简历解析和优化
+⏳ 消息推送功能
+⏳ 数据持久化（数据库）
+
+版本: v1.0.0
+作者: AI Enthusiasts
+许可: MIT License
+
+

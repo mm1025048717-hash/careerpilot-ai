@@ -1,0 +1,32 @@
+[tool.pylint]
+# Pylint 配置文件（用于消除误报警告）
+
+[tool.pylint.messages_control]
+# 禁用特定的警告
+disable = [
+    "import-error",              # 忽略导入错误（虚拟环境中的包）
+    "no-name-in-module",         # 忽略模块中找不到名称
+    "missing-module-docstring",  # 忽略缺少模块文档字符串
+    "missing-function-docstring",# 忽略缺少函数文档字符串
+    "missing-class-docstring",   # 忽略缺少类文档字符串
+]
+
+[tool.pylint.format]
+# 代码格式
+max-line-length = 120
+
+[tool.pylint.basic]
+# 良好的命名
+good-names = ["i", "j", "k", "ex", "Run", "_", "id", "e", "ai", "db"]
+
+[tool.black]
+# Black 代码格式化配置
+line-length = 120
+target-version = ['py38']
+
+[tool.isort]
+# Import 排序配置
+profile = "black"
+line_length = 120
+
+

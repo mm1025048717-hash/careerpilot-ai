@@ -1,0 +1,22 @@
+[MASTER]
+# 忽略导入错误（虚拟环境中的包）
+ignore=venv,env,.venv
+
+[MESSAGES CONTROL]
+# 禁用特定警告
+disable=
+    import-error,
+    no-name-in-module,
+    missing-module-docstring,
+    missing-function-docstring,
+    missing-class-docstring
+
+[BASIC]
+# 良好的变量命名
+good-names=i,j,k,ex,Run,_,id,e,ai
+
+[FORMAT]
+# 最大行长度
+max-line-length=120
+
+
